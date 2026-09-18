@@ -1,9 +1,10 @@
-package com.Bryan.frontend;
+package com.Bryan.frontend.objects;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
 
-public abstract class GameObject {
+public abstract class GameObject implements Collidable {
     protected float x;
     protected float y;
     protected float width;
@@ -72,5 +73,22 @@ public abstract class GameObject {
 
     public void setColor(Color color){
         this.color=color;
+    }
+
+    @Override
+    public Rectangle getCoreHitbox() {
+        // TODO: return a new Rectangle matching this object's x, y, width, height
+        return new Rectangle(x,y,width,height);
+    }
+
+    @Override
+    public Rectangle getGrazeHitbox() {
+        // TODO: return a Rectangle with +10px padding on every side
+        return new Rectangle(x-10,y-10,width+20,height+20);
+    }
+
+    @Override
+    public void onCollision(Collidable other) {
+        // Base collision handler (can be overridden by subclasses that need to react)
     }
 }

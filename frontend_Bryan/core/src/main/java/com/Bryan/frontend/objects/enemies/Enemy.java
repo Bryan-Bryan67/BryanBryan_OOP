@@ -1,6 +1,8 @@
-package com.Bryan.frontend;
+package com.Bryan.frontend.objects.enemies;
 
 import com.badlogic.gdx.graphics.Color;
+import com.Bryan.frontend.objects.Player;
+import com.Bryan.frontend.objects.GameObject;
 
 public class Enemy extends GameObject {
     public String name;

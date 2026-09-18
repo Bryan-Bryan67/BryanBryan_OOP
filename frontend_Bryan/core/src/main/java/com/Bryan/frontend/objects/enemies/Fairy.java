@@ -1,5 +1,7 @@
-package com.Bryan.frontend;
+package com.Bryan.frontend.objects.enemies;
 
+import com.Bryan.frontend.Player;
+import com.Bryan.frontend.objects.Collidable;
 import com.badlogic.gdx.graphics.Color;
 
 public class Fairy extends Enemy {
@@ -18,5 +20,14 @@ public class Fairy extends Enemy {
         this.hp = hp;
         this.maxHp= hp;
         this.scoreValue=500L;
+    }
+
+    @Override
+    public void onCollision(Collidable other) {
+        // TODO: Check whether the other received by this method is a Player
+        if (other.getClass()==Player.class){
+            System.out.println("Player touches fairy");
+        }
+        // TODO: Print "Player touches fairy"
     }
 }
