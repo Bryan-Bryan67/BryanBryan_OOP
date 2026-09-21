@@ -1,5 +1,11 @@
 package com.Bryan.frontend;
 
+import com.Bryan.frontend.objects.Player;
+import com.Bryan.frontend.objects.enemies.Boss;
+import com.Bryan.frontend.objects.enemies.Enemy;
+import com.Bryan.frontend.objects.enemies.Fairy;
+import com.Bryan.frontend.objects.items.Item;
+
 public class Test {
     public static void main(String[] args) {
         System.out.println("=== TOUHOU OOP PRACTICUM - MODULE 1: BASIC CLASSES & OBJECT INTERACTION ===");

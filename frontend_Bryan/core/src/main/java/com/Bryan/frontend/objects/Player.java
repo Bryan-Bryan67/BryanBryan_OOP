@@ -1,12 +1,10 @@
-package com.Bryan.frontend;
+package com.Bryan.frontend.objects;
 
-import com.Bryan.frontend.objects.GameObject;
 import com.Bryan.frontend.objects.enemies.Enemy;
 import com.Bryan.frontend.objects.items.Item;
 import com.Bryan.frontend.objects.items.ItemType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.Bryan.frontend.objects.Collidable;
 import com.badlogic.gdx.graphics.Color;
 
 public class Player extends GameObject {
@@ -14,10 +12,9 @@ public class Player extends GameObject {
     public int hp;
     public int power;
     public int spellCards;
-
     public long score;
     public Player(String name, int hp, int power, int spellCards) {
-        super(280,40,32,32,0,Color.RED);
+        super(280,40,32,32,200f,Color.RED);
         this.name = name;
         this.hp = hp;
         this.power = power;
@@ -26,7 +23,7 @@ public class Player extends GameObject {
     }
 
     public Player(float x, float y, String name, int hp, int power, int spellCards) {
-        super(x,y,32,32,0, Color.RED);
+        super(x,y,32,32,200f, Color.RED);
         this.name = name;
         this.hp = hp;
         this.power = power;
@@ -50,6 +47,10 @@ public class Player extends GameObject {
     public void shoot(Enemy target) {
         int damage = 10 + getPower();
         System.out.println(getName() + " shoots " + target.getName() + " dealing " + damage + " DMG!");
+        boolean defeated= target.takeDamage(damage);
+        if(defeated){
+            addScore(target.getScoreValue());
+        }
     }
 
     public boolean isAlive() {
@@ -123,6 +124,19 @@ public class Player extends GameObject {
         }
     }
 
+    public void moveUp(float delta) {
+        this.y+=speed*delta;
+    }
+    public void moveDown(float delta){
+        this.y-=speed*delta;
+    }
+    public void moveLeft(float delta){
+        this.x-=speed*delta;
+    }
+    public void moveRight(float delta){
+        this.x+=speed*delta;
+    }
+
     @Override
     public void onCollision(Collidable other) {
         // TODO: Check whether the other received by this method is an Item
@@ -141,13 +155,13 @@ public class Player extends GameObject {
                     // 1. Increase power by type.getPowerBonus() via this.power
                     this.power+=type.getPowerBonus();
                     // 2. Add score by item.getScoreValue() via addScore() (addScore() already automatically prints "gained X pts!")
-                    item.getScoreValue(addscore());
+                    addScore(item.getScoreValue());
                     // 3. Print: [name] collected POWER item! Power increased to [power]
                     System.out.println(name+" collected POWER item! Power increased to "+power);
                 }
                 case POINT -> {
                     // 1. Add score by item.getScoreValue() via addScore()
-                    item.getScoreValue(addscore());
+                    addScore(item.getScoreValue());
                     // 2. Print: [name] collected POINT item!
                     System.out.println(name+" collected POINT item!");
                 }
@@ -155,7 +169,7 @@ public class Player extends GameObject {
                     // 1. Increase spellCards by 1
                     spellCards+=1;
                     // 2. Add score by item.getScoreValue() via addScore()
-                    item.getScoreValue(addscore());
+                    addScore(item.getScoreValue());
                     // 3. Print: [name] collected BOMB item! SpellCards: [spellCards]
                     System.out.println(name+"collected BOMB item! Spell cards: "+spellCards);
                 }
@@ -163,7 +177,7 @@ public class Player extends GameObject {
                     // 1. Increase hp by 20
                     hp+=20;
                     // 2. Add score by item.getScoreValue() via addScore()'
-                    item.getScoreValue(addScore());
+                    addScore(item.getScoreValue());
                     // 3. Print: [name] collected LIFE item! HP: [hp]
                     System.out.println(name+" collected LIFE item! HP: " +hp);
                 }

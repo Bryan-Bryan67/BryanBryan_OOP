@@ -11,7 +11,7 @@ public class Enemy extends GameObject {
 
     protected long scoreValue;
     public Enemy(String name, int hp) {
-        super(280, 40, 24, 24,0,Color.PINK);
+        super(200, 380, 24, 24,0,Color.PINK);
         this.name = name;
         this.hp = hp;
         this.maxHp= hp;
@@ -19,16 +19,22 @@ public class Enemy extends GameObject {
     }
 
     public Enemy(float x, float y, float width, float height, Color color, String name, int hp, long scoreValue) {
-        super(x, y, 24, 24,0,Color.PINK);
+        super(x, y, width, height,0,Color.PINK);
         this.name = name;
         this.hp = hp;
         this.maxHp= hp;
+        this.scoreValue=0;
     }
 
-
     public boolean takeDamage(int damage) {
+        boolean wasAlive=isAlive();
         setHp(getHp() - damage);
-        return true;
+        System.out.println(getName() +" took "+damage+" damage! HP:"+getHp()+ "/"+getMaxHp());
+        if(wasAlive && getHp()==0){
+            System.out.println( getName()+" was defeated!");
+            return true;
+        }
+        return false;
     }
 
     public void attack(Player player, int damage) {
@@ -65,5 +71,9 @@ public class Enemy extends GameObject {
 
     public void setScoreValue(){
         this.scoreValue=scoreValue;
+    }
+
+    public int getHp() {
+        return hp;
     }
 }

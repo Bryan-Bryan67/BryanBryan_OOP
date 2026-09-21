@@ -11,6 +11,8 @@ public enum ItemType {
 
     ItemType(long scoreValue, int powerBonus) {
         // TODO: initialize scoreValue and powerBonus from the constructor parameters
+        this.scoreValue=scoreValue;
+        this.powerBonus=powerBonus;
     }
 
     public long getScoreValue() { return scoreValue; }
