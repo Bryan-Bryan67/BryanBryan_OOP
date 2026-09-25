@@ -11,6 +11,7 @@ public abstract class GameObject implements Collidable {
     protected float height;
     protected float speed;
     protected Color color;
+    protected boolean active = true;
 
     public GameObject(float x, float y, float width, float height, float speed, Color color){
         this.x=x;
@@ -25,9 +26,11 @@ public abstract class GameObject implements Collidable {
         //left empty during pre-CS to allow it to be overridden by subclasses
     }
 
-    public void render(ShapeRenderer shapeRenderer){
-        shapeRenderer.setColor(this.color);
-        shapeRenderer.rect(this.x,this.y,this.width,this.height);
+    public void render(ShapeRenderer shapeRenderer) {
+        if (shapeRenderer != null && color != null&&active /* TODO: add a condition that the object is still active */) {
+            shapeRenderer.setColor(color);
+            shapeRenderer.rect(x, y, width, height);
+        }
     }
 
     public float getX(){
@@ -90,5 +93,23 @@ public abstract class GameObject implements Collidable {
     @Override
     public void onCollision(Collidable other) {
         // Base collision handler (can be overridden by subclasses that need to react)
+    }
+
+    public boolean isDestroyed() {
+        // TODO: return true if the object is NOT active (active == false)
+            return !active;
+    }
+
+    public void destroy() {
+        // TODO: mark this object as inactive
+        active=false;
+    }
+
+    public boolean isOffScreen(float screenWidth, float screenHeight) {
+        // TODO: return true if the x or y position is outside the screen boundaries
+        // Use a 50px tolerance margin on each side, so objects that have only
+        // slightly passed the edge of the screen are not immediately considered gone.
+        final float offLimit=50f;
+        return x <-offLimit||x>screenWidth*screenHeight||y<-offLimit||y>screenWidth*screenHeight;
     }
 }

@@ -1,5 +1,6 @@
 package com.Bryan.frontend.objects;
 
+import com.Bryan.frontend.objects.bullets.Bullet;
 import com.Bryan.frontend.objects.enemies.Enemy;
 import com.Bryan.frontend.objects.items.Item;
 import com.Bryan.frontend.objects.items.ItemType;
@@ -53,6 +54,15 @@ public class Player extends GameObject {
         }
     }
 
+    public Bullet shootBullet() {
+        int damage = 10 + power;
+        System.out.println(name + " shoots bullet dealing " + damage + " DMG!");
+        // TODO: return a new Bullet positioned at the top-center of the Player
+        // (x + width/2 - 4, y + height), with BulletType.AMULET as its type,
+        // and the damage calculated above
+        return new Bullet(x+width/2-4, y+height, BulletType.AMULET, damage);
+    }
+
     public boolean isAlive() {
         // 1. Return true if hp > 0, and false otherwise
       return this.hp>0;
@@ -97,7 +107,7 @@ public class Player extends GameObject {
         this.spellCards=spellCards;
     }
 
-    public long getScore(){
+    public long getScoreValue(){
         return score;
     }
 
@@ -182,9 +192,15 @@ public class Player extends GameObject {
                     System.out.println(name+" collected LIFE item! HP: " +hp);
                 }
             }
+            item.destroy();
         } else {
             addScore(item.getScoreValue());
             System.out.println(name + " collected " + item.getItemType() + "!");
         }
+
+        if (item.isDestroyed()) return; // Prevent the item from being collected twice in the same frame
+        // ... switch-case for the item type that you created previously ...
+        // TODO: Mark this item as destroyed so it can later be removed by the Iterator
+        // Call the item's destroy() method here
     }
 }
