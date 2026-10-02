@@ -11,6 +11,12 @@ public class Item extends GameObject{
 //Pre-CS2 answer Q9:I think it needs to be overridden because in games, player and enemy store/drop items
     private ItemType itemTypeEnum;
 
+    public long getScoreValue(){
+        return this.scoreValue;
+    }
+    public String getItemType(){
+        return this.itemType;
+    }
     public Item(float x, float y, float width, float height, float speed, String itemType){
         super(x,y,width,height,speed,Color.WHITE);
         this.itemType=itemType;

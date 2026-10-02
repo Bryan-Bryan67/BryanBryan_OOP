@@ -50,7 +50,6 @@ public class Main extends ApplicationAdapter {
         entities.add(player);
         entities.add(fairy);
         entities.add(boss);
-        entities.add(item);
         entities.add(powerItem);
         entities.add(pointItem);
 
@@ -116,11 +115,12 @@ public class Main extends ApplicationAdapter {
         //       - Display the message: "Removed via Generic Iterator: " + [entity class name, using getClass().getSimpleName()]
         //       - Remove the element from the list using the Iterator's method
         //         (NOT list.remove()!).
-        while(iterator.hasNext()){
-            T object = iterator.next();
-            object.update(delta);
-            if(object.isOffScreen(screenWidth, screenHeight)||object.isDestroyed()){
-                System.out.println("Removed via Generic Iterator" +object.getClass().getSimpleName());
+        while (iterator.hasNext()) {
+            T entity = iterator.next();
+            entity.update(delta);
+
+            if (entity.isOffScreen(screenWidth, screenHeight) || entity.isDestroyed()) {
+                System.out.println("Removed via Generic Iterator: " + entity.getClass().getSimpleName());
                 iterator.remove();
             }
         }

@@ -107,7 +107,7 @@ public class Player extends GameObject {
         this.spellCards=spellCards;
     }
 
-    public long getScoreValue(){
+    public long getScore(){
         return score;
     }
 
