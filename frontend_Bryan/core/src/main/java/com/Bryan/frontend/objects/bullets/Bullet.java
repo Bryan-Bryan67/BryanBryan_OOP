@@ -1,5 +1,4 @@
 package com.Bryan.frontend.objects.bullets;
-import com.Bryan.frontend.objects.BulletType;
 import com.Bryan.frontend.objects.Collidable;
 import com.Bryan.frontend.objects.GameObject;
 import com.Bryan.frontend.objects.enemies.Enemy;

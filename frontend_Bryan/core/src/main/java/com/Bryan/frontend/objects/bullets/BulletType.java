@@ -1,4 +1,4 @@
-package com.Bryan.frontend.objects;
+package com.Bryan.frontend.objects.bullets;
 
 public enum BulletType {
     DANMAKU,

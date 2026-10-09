@@ -19,7 +19,7 @@ public class Enemy extends GameObject {
     }
 
     public Enemy(float x, float y, float width, float height, Color color, String name, int hp, long scoreValue) {
-        super(x, y, width, height,0,Color.PINK);
+        super(x, y, width, height,0,color);
         this.name = name;
         this.hp = hp;
         this.maxHp= hp;

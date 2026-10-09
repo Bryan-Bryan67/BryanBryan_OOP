@@ -1,6 +1,7 @@
 package com.Bryan.frontend.objects;
 
 import com.Bryan.frontend.objects.bullets.Bullet;
+import com.Bryan.frontend.objects.bullets.BulletType;
 import com.Bryan.frontend.objects.enemies.Enemy;
 import com.Bryan.frontend.objects.items.Item;
 import com.Bryan.frontend.objects.items.ItemType;
@@ -128,7 +129,7 @@ public class Player extends GameObject {
                 x -= speed * delta;
             }
             // TODO: Check D / RIGHT input → x += speed * delta
-            if(Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.DOWN)){
+            if(Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
                 x += speed * delta;
             }
         }
