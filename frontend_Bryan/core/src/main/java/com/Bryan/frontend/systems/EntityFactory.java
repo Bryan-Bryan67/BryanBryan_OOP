@@ -70,4 +70,26 @@ public class EntityFactory {
         fairy.setAnimation(idleAnim);
         return fairy;
     }
+
+    public static Bullet createPlayerBullet(float x, float y, int damage, String spriteKey) {
+        // TODO 1: Retrieve the TextureRegion for spriteKey using getTextureRegion from
+        // AssetManager.getInstance(), then store it in a local variable named `sprite`.
+        TextureRegion sprite=AssetManager.getInstance().getTextureRegion(spriteKey);
+        // TODO 2:
+        // Create a new Bullet using x, y, BulletType.AMULET, and damage;
+        // store it in a local variable named `bullet`.
+        Bullet bullet=new Bullet(x,y,BulletType.AMULET,damage);
+        // TODO 3:
+        // Assign sprite to bullet using bullet.setSprite(...).
+        bullet.setSprite(sprite);
+        // TODO 4:
+        // Return bullet.
+        return bullet;
+    }
+
+    public static Bullet createPlayerBullet(float x, float y, int damage) {
+        // TODO 5:
+        // Return the result of calling the previous createPlayerBullet overload with "bullet_amulet" as spriteKey.
+        return createPlayerBullet(x,y,damage,"bullet_amulet");
+    }
 }

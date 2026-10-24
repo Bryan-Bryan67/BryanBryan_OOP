@@ -2,6 +2,7 @@ package com.Bryan.frontend.objects.bullets;
 import com.Bryan.frontend.objects.Collidable;
 import com.Bryan.frontend.objects.GameObject;
 import com.Bryan.frontend.objects.enemies.Enemy;
+import com.Bryan.frontend.systems.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 
 public class Bullet extends GameObject{
@@ -9,14 +10,14 @@ public class Bullet extends GameObject{
     private int damage;
 
     public Bullet(float x, float y, BulletType bulletType, int damage) {
-        super(x, y, 8, 16, 400f, Color.YELLOW);
+        super(x, y, 16, 16, 400f, Color.YELLOW);
         // TODO: initialize bulletType and damage from the parameters
         this.bulletType=bulletType;
         this.damage=damage;
     }
 
     public Bullet(float x, float y, float speed, BulletType bulletType, int damage) {
-        super(x, y, 8, 16, speed, Color.YELLOW);
+        super(x, y, 16, 16, speed, Color.YELLOW);
         // TODO: initialize bulletType and damage from the parameters
         this.bulletType=bulletType;
         this.damage=damage;
@@ -39,14 +40,9 @@ public class Bullet extends GameObject{
     @Override
     public void onCollision(Collidable other) {
         if (other instanceof Enemy enemy) {
-            // 1. Display a message indicating that the Bullet hit the Enemy in the format:
-            //    Bullet hit [EnemyName] for [damage] DMG!
             System.out.println("Bullet hit " + enemy.name+ " for " +damage+ " DMG!");
-            // 2. Call the Enemy's takeDamage() method with this Bullet's damage.
             enemy.takeDamage(getDamage());
-            // 3. Destroy the bullet after hitting the Enemy, regardless of the result
-            //    (whether the enemy is defeated or still alive), because one bullet
-            //    can only hit one target.
+            AssetManager.getInstance().playSound("enemy_shot");
             this.destroy();
         }
     }

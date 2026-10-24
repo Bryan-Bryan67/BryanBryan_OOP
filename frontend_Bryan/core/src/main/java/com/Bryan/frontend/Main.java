@@ -25,7 +25,7 @@ public class Main extends ApplicationAdapter {
 
     // TODO 1: Declare fields for Player, Fairy, Boss, Items, and List<GameObject>
     private Player player;
-    private Fairy fairy;
+    private List<Fairy> fairy;
     private Boss boss;
     private Item powerItem;
     private Item pointItem;
@@ -35,53 +35,25 @@ public class Main extends ApplicationAdapter {
     @Override
     public void create() {
         shapeRenderer = new ShapeRenderer();
-        entities = new ArrayList<>();
-        spriteBatch=new SpriteBatch();
-        // TODO 2: Instantiate Player (Red square) at (280, 40)
-        player =new Player("Reimu Hakurei", 100, 15, 3);
-
-        // TODO 3: Instantiate Fairy (Pink square) at (150, 380)
-        fairy=new Fairy(150,380,"Stage 1 Fairy", 20);
-
-        // TODO 4: Instantiate Boss (Blue square) at (380, 400)
-        boss=new Boss(380, 400,"Cirno (Stage 2 Boss)", 150);
-
-        // TODO 5: Instantiate Items (White squares) with downward speeds
-        powerItem = new Item(200, 450, 16, 16, 80f, ItemType.POWER, 500L);
-        pointItem = new Item(320, 480, 12, 12, 120f, ItemType.POINT, 1000L);
-        // TODO 6: Add all entities into the gameObjects list polymorphically
+        batch=new SpriteBatch();
+        fairy=new ArrayList<>();
+        entities=new ArrayList<>();
+        AssetManager.getInstance().init();
+        AssetManager.getInstance().playMusic("BGM_1", true);
+        player=EntityFactory.createPlayer(280, 40, "Reimu Hakurei", 100, 15, 3);
+        Fairy redFairy=EntityFactory.createFairy(150, 380, "Red Fairy", 20);
+        Fairy blueFairy=EntityFactory.createFairy(250, 380, "Blue Fairy", 20, "fairy_idle_blue");
+        boss=EntityFactory.createBoss(380, 400, "Rumia", 150);
+        powerItem=EntityFactory.createItem(200, 450, ItemType.POWER);
+        pointItem=EntityFactory.createItem(320, 480, ItemType.POINT);
+        fairy.add(redFairy);
+        fairy.add(blueFairy);
         entities.add(player);
-        entities.add(fairy);
+        entities.add(redFairy);
+        entities.add(blueFairy);
         entities.add(boss);
         entities.add(powerItem);
         entities.add(pointItem);
-
-        // TODO 1:
-        // When initializing the renderer, create a SpriteBatch and store it in batch.
-        // LibGDX hint: new SpriteBatch().
-        batch=new SpriteBatch();
-        // TODO 2:
-        // Initialize the fairy and entities lists as empty ArrayLists.
-        fairy=new ArrayList<>();
-        entities=new ArrayList<>();
-        // TODO 3:
-        // Before creating entities, get the AssetManager instance and call init().
-        AssetManager.getInstance().init();
-        // TODO 4:
-        // Update how all entities are created! Follow the table and create Player, Fairy, Boss, and Item
-        // using the appropriate EntityFactory methods.
-        // Add both Fairies to the fairy list using add(...).
-        Player player=EntityFactory.createPlayer(280, 40, "Reimu Hakurei", 100, 15, 3);
-        Fairy RedFairy=EntityFactory.createFairy(150, 380, "Red Fairy", 20);
-        Fairy BlueFairy=EntityFactory.createFairy(250, 380, "Blue Fairy", 20, "fairy_idle_blue");
-        Boss boss=EntityFactory.createBoss(380, 400, "Rumia", 150);
-        Item powerItem=EntityFactory.createItem(200, 450, ItemType.POWER);
-        Item pointItem=EntityFactory.createItem(320, 480, ItemType.POINT);
-        // TODO 5:
-        // Add all the objects you have just created to entities.
-        entities.add(RedFairy);
-        entities.add(BlueFairy);
-
     }
 
     @Override
@@ -93,6 +65,7 @@ public class Main extends ApplicationAdapter {
         // Clue: Gdx.input.isKeyJustPressed()
         if(Gdx.input.isKeyJustPressed(Input.Keys.Z)){
             entities.add(player.shootBullet());
+            AssetManager.getInstance().playSound("player_shoot");
         }
         // TODO 2: Call updateAndClean(entities, delta, Gdx.graphics.getWidth(), Gdx.graphics.getHeight())
         // to update and clean up destroyed/off-screen entities.

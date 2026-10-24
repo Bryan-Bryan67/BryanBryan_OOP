@@ -5,9 +5,13 @@ import com.Bryan.frontend.objects.bullets.BulletType;
 import com.Bryan.frontend.objects.enemies.Enemy;
 import com.Bryan.frontend.objects.items.Item;
 import com.Bryan.frontend.objects.items.ItemType;
+import com.Bryan.frontend.systems.AssetManager;
+import com.Bryan.frontend.systems.EntityFactory;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Player extends GameObject {
     public String name;
@@ -15,6 +19,7 @@ public class Player extends GameObject {
     public int power;
     public int spellCards;
     public long score;
+    public int currentDir;
     public Player(String name, int hp, int power, int spellCards) {
         super(280,40,32,32,200f,Color.RED);
         this.name = name;
@@ -58,10 +63,7 @@ public class Player extends GameObject {
     public Bullet shootBullet() {
         int damage = 10 + power;
         System.out.println(name + " shoots bullet dealing " + damage + " DMG!");
-        // TODO: return a new Bullet positioned at the top-center of the Player
-        // (x + width/2 - 4, y + height), with BulletType.AMULET as its type,
-        // and the damage calculated above
-        return new Bullet(x+width/2-4, y+height, BulletType.AMULET, damage);
+        return EntityFactory.createPlayerBullet(x+width/2-4, y+height, damage);
     }
 
     public boolean isAlive() {
@@ -115,6 +117,8 @@ public class Player extends GameObject {
 
     @Override
     public void update(float delta) {
+        super.update(delta);
+        float dx=0;
         if (Gdx.input != null) {
             // TODO: Check W / UP input   → y += speed * delta
             if(Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP)){
@@ -127,10 +131,42 @@ public class Player extends GameObject {
             // TODO: Check A / LEFT input → x -= speed * delta
             if(Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT)){
                 x -= speed * delta;
+                dx=-1;
             }
             // TODO: Check D / RIGHT input → x += speed * delta
             if(Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
                 x += speed * delta;
+                dx=+1;
+            }
+        }
+        updateAnimationState(dx);
+    }
+
+    public void updateAnimationState(float dx) {
+        AssetManager assets = AssetManager.getInstance();
+        if (dx < 0) {
+            if (currentDir!=-1){
+                currentDir=-1;
+                Animation<TextureRegion> anim=assets.getAnimation("player_left");
+                if(anim!=null){
+                    setAnimation(anim);
+                }
+            }
+        } else if (dx > 0) {
+            if (currentDir!=1){
+                currentDir=1;
+                Animation<TextureRegion> anim=assets.getAnimation("player_right");
+                if(anim!=null){
+                    setAnimation(anim);
+                }
+            }
+        } else {
+            if (currentDir!=0){
+                currentDir=0;
+                Animation<TextureRegion> anim=assets.getAnimation("player_idle");
+                if(anim!=null){
+                    setAnimation(anim);
+                }
             }
         }
     }
@@ -174,7 +210,7 @@ public class Player extends GameObject {
                     // 1. Add score by item.getScoreValue() via addScore()
                     addScore(item.getScoreValue());
                     // 2. Print: [name] collected POINT item!
-                    System.out.println(name+" collected POINT item!");
+                    System.out.println(name+" collected POINT item! ");
                 }
                 case BOMB -> {
                     // 1. Increase spellCards by 1
@@ -193,6 +229,7 @@ public class Player extends GameObject {
                     System.out.println(name+" collected LIFE item! HP: " +hp);
                 }
             }
+            AssetManager.getInstance().playSound("item_take");
             item.destroy();
         } else {
             addScore(item.getScoreValue());

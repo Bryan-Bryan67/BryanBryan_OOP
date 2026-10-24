@@ -1,5 +1,6 @@
 package com.Bryan.frontend.objects.enemies;
 
+import com.Bryan.frontend.systems.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.Bryan.frontend.objects.Player;
 import com.Bryan.frontend.objects.GameObject;
@@ -35,7 +36,7 @@ public class Enemy extends GameObject {
         System.out.println(name + " took " + damage + " damage! HP: " + this.hp + "/" + this.maxHp);
         if (wasAlive && this.hp == 0) {
             System.out.println(name + " was defeated!");
-            // TODO: mark this enemy as destroyed
+            AssetManager.getInstance().playSound("enemy_death");
             destroy();
             return true;
         }
