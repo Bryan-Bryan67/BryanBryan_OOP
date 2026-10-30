@@ -5,13 +5,16 @@ import com.Bryan.frontend.objects.bullets.BulletType;
 import com.Bryan.frontend.objects.enemies.Enemy;
 import com.Bryan.frontend.objects.items.Item;
 import com.Bryan.frontend.objects.items.ItemType;
+import com.Bryan.frontend.objects.patterns.ShootingPattern;
 import com.Bryan.frontend.systems.AssetManager;
+import com.Bryan.frontend.systems.BulletManager;
 import com.Bryan.frontend.systems.EntityFactory;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 
 public class Player extends GameObject {
     public String name;
@@ -19,7 +22,8 @@ public class Player extends GameObject {
     public int power;
     public int spellCards;
     public long score;
-    public int currentDir;
+    public int currentDir=0;
+    private ShootingPattern shootingPattern;
     public Player(String name, int hp, int power, int spellCards) {
         super(280,40,32,32,200f,Color.RED);
         this.name = name;
@@ -60,10 +64,20 @@ public class Player extends GameObject {
         }
     }
 
-    public Bullet shootBullet() {
-        int damage = 10 + power;
-        System.out.println(name + " shoots bullet dealing " + damage + " DMG!");
-        return EntityFactory.createPlayerBullet(x+width/2-4, y+height, damage);
+    // TODO: Update shootBullet() to shootBullet(BulletManager bulletManager)!
+    public void shootBullet(BulletManager bulletManager) {
+        // - If bulletManager is null, return immediately
+        if (bulletManager==null){
+            return;
+        }
+        // - If shootingPattern is not null, call execute() from the player's muzzle coordinates (x + width / 2f - 8f, y + height)
+        if (shootingPattern!=null){
+            shootingPattern.execute(x+width/2f-8f, y+height, bulletManager, true);
+        }
+        // - If shootingPattern is null, call bulletManager.spawnPlayerBullet() directly
+        if (shootingPattern==null){
+            bulletManager.spawnPlayerBullet(x, y, vx, vy, damage);
+        }
     }
 
     public boolean isAlive() {
@@ -78,42 +92,40 @@ public class Player extends GameObject {
         }
     }
 
+    //getterNsetter
     public int getHp(){
         return hp;
     }
-
     public void setHp(int hp){
         this.hp = Math.max(0, hp);
     }
-
     public String getName(){
         return name;
     }
-
     public void setPower(String name){
         this.name=name;
     }
-
     public int getPower(){
         return power;
     }
-
     public void setPower(int power){
         this.power=power;
     }
-
     public int getSpellCards(){
         return spellCards;
     }
-
     public void setSpellCards(int spellCards){
         this.spellCards=spellCards;
     }
-
     public long getScore(){
         return score;
     }
-
+    public ShootingPattern getShootingPattern() {
+        return shootingPattern;
+    }
+    public void setShootingPattern(ShootingPattern shootingPattern){
+        this.shootingPattern=shootingPattern;
+    }
 
     @Override
     public void update(float delta) {
@@ -240,5 +252,21 @@ public class Player extends GameObject {
         // ... switch-case for the item type that you created previously ...
         // TODO: Mark this item as destroyed so it can later be removed by the Iterator
         // Call the item's destroy() method here
+    }
+
+    @Override
+    public Rectangle getCoreHitbox() {
+        // TODO: Return a new 8x8 Rectangle centered right in the middle of the sprite:
+        // - X coordinate: x + (width / 2f) - 4f
+        // - Y coordinate: y + (height / 2f) - 4f
+        // - width: 8f, height: 8f
+        return new Rectangle(x+(width/2f)-4f, y+(height/2f)-4f, 8f, 8f);
+    }
+
+    @Override
+    public Rectangle getGrazeHitbox() {
+        // TODO: Return a new Rectangle at position coordinates (x, y)
+        //       covering the entire visual sprite dimensions (width, height)
+        return new Rectangle(x, y, width, height);
     }
 }
