@@ -90,7 +90,7 @@ public class Player extends GameObject {
         if (points > 0) {
             this.score += points;
             notifyScoreChanged();
-            System.out.println(getName() + " gained " + points + " pts! Total" + this.score);
+            System.out.println(getName() + " gained " + points + " pts! Total " + this.score);
         }
     }
 
@@ -368,7 +368,7 @@ public class Player extends GameObject {
             addScore(item.getScoreValue());
             System.out.println(name + " collected " + item.getItemType() + "!");
         }
-
+        AssetManager.getInstance().playSound("item_take");
         item.destroy();
     }
 

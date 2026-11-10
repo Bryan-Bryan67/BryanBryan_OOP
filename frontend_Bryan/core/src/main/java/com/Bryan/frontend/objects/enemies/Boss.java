@@ -11,7 +11,6 @@ public class Boss extends Enemy{
     // TODO: Declare a private field named `shootingPattern` of type ShootingPattern
     //       and immediately initialize it with the `SpreadShot` we just created.
     //       Make sure speed is 200f, spread angle is 30f, and 3 bullets (num) are fired.
-
     private ShootingPattern shootingPattern=new SpreadShot(200f, 3, 30f);
 
     public Boss(String name, int hp) {
