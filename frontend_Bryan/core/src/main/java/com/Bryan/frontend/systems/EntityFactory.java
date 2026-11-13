@@ -34,12 +34,16 @@ public class EntityFactory {
         return item;
     }
 
-    // Create an enemy bullet (type DANMAKU, speed 0f, sprite bullet_danmaku)
-    public static Bullet createEnemyBullet(float x, float y, int damage) {
+    public static Bullet createEnemyBullet(float x, float y, int damage, String spriteKey) {
+        String key = (spriteKey != null) ? spriteKey : "bullet_danmaku";
+        TextureRegion sprite = AssetManager.getInstance().getTextureRegion(key);
         Bullet bullet = new Bullet(x, y, 0f, BulletType.DANMAKU, damage);
-        TextureRegion sprite = AssetManager.getInstance().getTextureRegion("bullet_danmaku");
         bullet.setSprite(sprite);
         return bullet;
+    }
+
+    public static Bullet createEnemyBullet(float x, float y, int damage) {
+        return createEnemyBullet(x, y, damage, "bullet_danmaku");
     }
 
     public static Fairy createFairy(float x, float y, String name, int hp) {

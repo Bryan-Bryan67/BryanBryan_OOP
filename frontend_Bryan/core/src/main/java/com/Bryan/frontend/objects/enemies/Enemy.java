@@ -1,11 +1,12 @@
 package com.Bryan.frontend.objects.enemies;
 
+import com.Bryan.frontend.objects.EntityShooter;
+import com.Bryan.frontend.objects.patterns.entityStrategy.EntityMovementPattern;
 import com.Bryan.frontend.systems.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.Bryan.frontend.objects.Player;
-import com.Bryan.frontend.objects.GameObject;
 
-public class Enemy extends GameObject {
+public class Enemy extends EntityShooter {
     public String name;
     public int hp;
     public int maxHp;
@@ -25,6 +26,14 @@ public class Enemy extends GameObject {
         this.hp = hp;
         this.maxHp= hp;
         this.scoreValue=0;
+    }
+
+    public Enemy(float x, float y, float width, float height, Color color, String name, int hp, long scoreValue, ShootingPattern shootingPattern, EntityMovementPattern movementPattern) {
+        super(x, y, width, height, 0, color, shootingPattern, movementPattern);
+        this.name = name;
+        this.hp = hp;
+        this.maxHp = hp;
+        this.scoreValue = scoreValue;
     }
 
     public boolean takeDamage(int damage) {

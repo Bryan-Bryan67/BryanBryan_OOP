@@ -40,66 +40,58 @@ public abstract class GameObject implements Collidable {
         }
     }
 
+    //getterNsetter
     public float getX(){
         return x;
     }
     public void setX(float x){
         this.x=x;
     }
-
     public float getY(){
         return y;
     }
     public void setY(float y){
         this.y=y;
     }
-
     public float getWidth(){
         return width;
     }
     public void setWidth(float width){
         if (width > 0) this.width = width;
     }
-
     public float getHeight(){
         return height;
     }
-
     public void setHeight(float height){
         if (height > 0) this.height = height;
     }
-
     public float getSpeed(){
         return speed;
     }
-
     public void setSpeed(float speed){
         if (speed >= 0) this.speed = speed;
     }
-
     public Color getColor(){
         return color;
     }
-
     public void setColor(Color color){
         this.color=color;
     }
-
     public TextureRegion getSprite(){
         return sprite;
     }
-
     public void setSprite(TextureRegion sprite){
         this.sprite=sprite;
     }
-
     public Animation<TextureRegion> getAnimation(){
         return animation;
     }
-
     public void setAnimation(Animation<TextureRegion> animation){
         this.animation=animation;
     }
+    public void setActive(boolean active) { this.active = active; }
+    public float getStateTime() { return stateTime; }
+    public void setStateTime(float stateTime) { this.stateTime = stateTime; }
 
 
 

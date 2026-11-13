@@ -2,6 +2,7 @@ package com.Bryan.frontend.objects.bullets;
 import com.Bryan.frontend.objects.Collidable;
 import com.Bryan.frontend.objects.GameObject;
 import com.Bryan.frontend.objects.enemies.Enemy;
+import com.Bryan.frontend.objects.patterns.bulletStrategy.BulletMovementPattern;
 import com.Bryan.frontend.systems.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -9,16 +10,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class Bullet extends GameObject{
     private BulletType bulletType;
     private int damage;
-    // TODO: Declare the following private attributes:
-    // 1. float vx and vy (2D velocity vector components)
     private float vx;
     private float vy;
-    // 2. float angle initialized to 90f (visual rotation angle in degrees)
     private float angle=90f;
-    // 3. boolean isPlayerBullet (flag indicating whether this bullet belongs to the player or an enemy)
     private boolean isPlayerBullet;
-    // 4. boolean grazed (flag indicating whether this bullet has already been grazed by the player)
     private boolean grazed;
+    private BulletMovementPattern movementPattern;
+
 
     public Bullet(float x, float y, BulletType bulletType, int damage) {
         super(x, y, 16, 16, 400f, Color.YELLOW);
@@ -48,11 +46,17 @@ public class Bullet extends GameObject{
     @Override
     public void update(float delta) {
         super.update(delta);
-        //ASK L8R TO REMOVE OR KEEP THIS
-        y+=speed*delta;
-
-        x+=vx*delta;
-        y+=vy*delta;
+        // TODO (6 points):
+        // Check whether movementPattern is not null:
+        // - If present (not null): delegate movement to movementPattern.move(this, delta);
+        // - If null: retain default movement (add vx * delta to x and vy * delta to y)
+        if (movementPattern!=null){
+            movementPattern.move(this, delta);
+        }
+        else {
+            x+=vx*delta;
+            y+=vy*delta;
+        }
     }
 
     public BulletType getBulletType(){
@@ -75,25 +79,19 @@ public class Bullet extends GameObject{
 
     // Pool Re-initialization for the Object Pool Pattern
     public void init(float x, float y, float vx, float vy, BulletType bulletType, int damage, boolean isPlayerBullet) {
-        // TODO:
-        // 1. Update position (x, y) and velocity vector components (vx, vy) from the argument parameters
         this.x=x;
         this.y=y;
         this.vx=vx;
         this.vy=vy;
-        // 2. Calculate the visual rotation angle using Math.atan2 as explained above, then convert it to degrees
         this.angle=(float)Math.toDegrees(Math.atan2(vy, vx));
-        // 3. Update speed by calculating the resultant length of both velocity vectors using Math.hypot as explained above
         this.speed=(float)Math.hypot(vx, vy);
-        // 4. Save the bullet's identity attributes (bulletType, damage, and isPlayerBullet) from the parameters
         this.bulletType=bulletType;
         this.damage=damage;
         this.isPlayerBullet=isPlayerBullet;
-        // 5. Reactivate this bullet and reset its animation state time from 0
         this.active=true;
         this.stateTime=0f;
-        // 6. Make sure the grazed status is reset to inactive so this recycled bullet can be grazed again
         this.grazed=false;
+        this.movementPattern = null;
     }
 
     @Override
@@ -110,8 +108,6 @@ public class Bullet extends GameObject{
         }
     }
 
-    // TODO:
-    // 1. Create getters for isPlayerBullet, vx, and vy
     public boolean getIsPlayerBullet() {
         return isPlayerBullet;
     }
@@ -135,9 +131,14 @@ public class Bullet extends GameObject{
         return grazed;
     }
     // 4. Create a setter setGrazed(boolean grazed)
-
     public void setGrazed(boolean grazed){
         this.grazed=grazed;
+    }
+    public BulletMovementPattern getMovementPattern() {
+        return movementPattern;
+    }
+    public void setMovementPattern(BulletMovementPattern movementPattern) {
+        this.movementPattern = movementPattern;
     }
 }
 

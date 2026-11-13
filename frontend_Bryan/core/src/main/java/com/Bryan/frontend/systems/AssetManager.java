@@ -159,15 +159,19 @@ public class AssetManager {
             registerAnimationFromSheet("boss_right","rumia.png", 64,64,2,4,0.2f);
             registerAnimationFromSheet("fairy_idle_red","fairy.png", 32,32, 1, 8, 0.125f);
             registerAnimationFromSheet("fairy_idle_blue","fairy.png", 32,32, 0, 8, 0.125f);
-        //TODO AA
             registerRegionFromSheet("bullet_amulet","amulet_reimu.png", 16,16, 0, 0);
             registerRegionFromSheet("bullet_amulet_homing","amulet_reimu.png", 16,16, 1, 0);
-            registerRegionFromSheet("bullet_danmaku","bullets_small.png", 16,16, 2, 3);
+            registerRegionFromSheet("bullet_danmaku",        "bullets_small.png", 16, 16, 2, 3); // Default / Blue
+            registerRegionFromSheet("bullet_danmaku_blue",   "bullets_small.png", 16, 16, 2, 3);
+            registerRegionFromSheet("bullet_danmaku_red",    "bullets_small.png", 16, 16, 2, 6);
+            registerRegionFromSheet("bullet_danmaku_purple", "bullets_small.png", 16, 16, 2, 4);
+            registerRegionFromSheet("bullet_danmaku_orange", "bullets_small.png", 16, 16, 2, 15);
+            registerRegionFromSheet("bullet_danmaku_green",  "bullets_small.png", 16, 16, 2, 10);
             registerRegionFromSheet("item_power","items.png", 16,16, 0, 0);
             registerRegionFromSheet("item_point","items.png", 16,16, 0, 1);
             registerRegionFromSheet("item_bomb","items.png", 16,16, 0, 3);
             registerRegionFromSheet("item_life","items.png", 16,16, 0, 5);
-
+        //Sound stuff
             registerMusicFromAssets("BGM_1", "Rumia_Theme.mp3");
             registerSoundFromAssets("player_shoot", "fireball_whoosh.wav");
             registerSoundFromAssets("enemy_death", "fortnite_break.wav");
